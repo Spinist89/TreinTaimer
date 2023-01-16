@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru" class="pt-sm-5 mt-sm-5 ms-sm-5 pe-sm-5 me-sm-5 ps-sm-5 pb-sm-5 mb-sm-5">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Таймер</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.min.css">
+</head>
+
+<body>
+    <div class="container-fluid themed-container text-center"><font style="vertical-align: inherit;">
+        <font style="vertical-align: inherit;"><h1>-Таймер-</h1></font></font>
+        <div class="col-12 col-sm-9 mt-2 mb-2 ps-sm-5 pe-sm-5 ms-sm-5 mt-sm-5 mb-sm-5 me-sm-5">
+            <input type="text" id="1"><br>
+
+            <input type="text" id="2">
+        </div>
+
+    <div class="container-fluid themed-container text-center mt-5">
+        <font style="vertical-align: inherit;">
+            <font style="vertical-align: inherit;">
+            </font>
+        </font>
+        <div class="ps-sm-0 pe-sm-0 mb-sm-0 kvadrat mt-sm-0 pb-sm-5">
+            <span class="ps-sm-5 pb-sm-5 pt-sm-5 pe-sm-5 mt-sm-0"><time  id = "time">00:00:00</time></span>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    var iter = 2
+    var cicle = 1
+   //Объявим переменную
+   var stopTimer;
+
+   //Функция для старта
+   function testTimer(startTime) {
+     //для повторного запуска очистим rezult
+     document.getElementById("rezult").innerHTML = '';
+     //выключим кнопку запуска
+     var bot = document.getElementById("bot");
+     bot.setAttribute("disabled","");
+     //сколько будет длиться обратный отчет
+     var time = startTime;
+     //определим сколько минут
+     var min = parseInt(time / 60);
+     if ( min < 1 ) min = 0;
+        time = parseInt(time - min * 60);
+     if ( min < 10 ) min = '0'+min;
+     //определим сколько секунд
+     var seconds = time;
+     if ( seconds < 10 ) seconds = '0'+seconds;
+     //отрисовываем время
+     if ( iter === 2)
+     {document.getElementById("time").innerHTML='<span>Время работы: '+min+':'+seconds+' сек; '+cicle+' круг</span>';}
+     else
+     {document.getElementById("time").innerHTML='<span>Время отдыха: '+min+':'+seconds+' сек; '+cicle+' круг</span>';}
+     //уменьшаем общее время на одну секунду
+     startTime--;
+     //смотрим время не закончилось
+     if ( startTime  >= 0 ) {
+                //если нет, то повторяем процедуру заново
+       stopTimer  =  setTimeout(function(){testTimer(startTime); }, 1000);
+           //если закончилось, то выводим сообщение на экран, и делаем кнопку запуска активной
+   } else {
+     document.getElementById("time").innerHTML='<span>Осталось времени- 00 мин 00 секунд</span>';
+     var rezult = document.getElementById("rezult");
+     clearTimeout(stopTimer);
+     var bot = document.getElementById("bot");
+     bot.removeAttribute("disabled","disabled");
+     bot.removeChild(bot.childNodes[0]);
+     var text = document.createTextNode("Начать заново");
+     bot.appendChild(text);
+        if (iter === 1)
+        {
+        var audio = new Audio(); // Создаём новый элемент Audio
+        audio.src = 'svistok2.mp3'; // Указываем путь к звуку "клика"
+        audio.autoplay = true; // Автоматически запускаем
+        var timer2 = document.getElementById('1').value
+        iter = 2;
+        cicle +=1
+        }
+        else {
+        var audio = new Audio(); // Создаём новый элемент Audio
+        audio.src = 'duda.mp3'; // Указываем путь к звуку "клика"
+        audio.autoplay = true; // Автоматически запускаем
+        var timer2 = document.getElementById('2').value
+        iter = 1;
+        }
+         testTimer(timer2)
+    }
+   }
+
+   //Функция для остановки обратного отчета
+   function stop(){
+        //очистим переменную с таймером
+        clearTimeout(stopTimer);
+        //и включим кнопку запуска
+        var bot = document.getElementById("bot");
+        bot.removeAttribute("disabled","disabled");
+   }
+   </script>
+
+   <button class="btn btn-warning active" id = "bot" onclick="testTimer (document.getElementById('1').value)">Начать</button>
+   <button class="btn btn-danger active" onclick="stop ()">Остановить</button>
+   <p id = "rezult">
+   </p>
+</body>
+
+</html>
